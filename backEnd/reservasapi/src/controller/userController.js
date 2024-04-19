@@ -111,7 +111,7 @@ module.exports = class UserController {
       if (result.length === 0) {
         return res.status(404).json({ message: "Usuário não encontrado" });
       }
-      res.status(200).json({ message: "Usuário encontrado", user: result });
+      res.status(200).json({ message: "Usuários encontrados", user: result });
     });
   }
 
