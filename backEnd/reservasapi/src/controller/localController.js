@@ -2,10 +2,10 @@ const connect = require("../db/connect");
 
 module.exports = class LocalController {
   static async createLocal(req, res) {
-    const { continente, pais_OU_regiao } = req.body;
+    const { continente, regiao, pais, cidade, atracao, fotoLocal } = req.body;
 
     // Verifica se algum campo está em branco
-    if (!continente || !pais_OU_regiao) {
+    if (!continente || !regiao || !pais || !cidade || !atracao || !fotoLocal ) {
       return res
         .status(400)
         .json({ error: "Todos os campos são obrigatórios" });
@@ -18,10 +18,31 @@ module.exports = class LocalController {
         .json({ error: "O continente deve ter no máximo 9 caracteres" });
     }
 
-    // Verifica se o país ou região não excede 255 caracteres
-    if (pais_OU_regiao.length > 255) {
+    // Verifica se a região não excede o máximo de caracteres
+    if (regiao.length > 100) {
       return res.status(400).json({
-        error: "O campo país ou região deve ter no máximo 255 caracteres",
+        error: "O campo região deve ter no máximo 100 caracteres",
+      });
+    }
+
+    // Verifica se a país não excede o máximo de caracteres
+    if (pais.length > 100) {
+      return res.status(400).json({
+        error: "O campo região deve ter no máximo 100 caracteres",
+      });
+    }
+
+    // Verifica se cidade não excede o máximo de caracteres
+    if (cidade.length > 100) {
+      return res.status(400).json({
+        error: "O campo região deve ter no máximo 100 caracteres",
+      });
+    }
+
+    // Verifica se atração não excede o máximo de caracteres
+    if (atracao.length > 255) {
+      return res.status(400).json({
+        error: "O campo região deve ter no máximo 100 caracteres",
       });
     }
 
@@ -32,15 +53,30 @@ module.exports = class LocalController {
         error: "O campo continente só aceita letras, acentos e espaços",
       });
     }
-    if (!regexLetrasAcentosEspacos.test(pais_OU_regiao)) {
+    if (!regexLetrasAcentosEspacos.test(regiao)) {
       return res.status(400).json({
-        error: "O campo país ou região só aceita letras, acentos e espaços",
+        error: "O campo região só aceita letras, acentos e espaços",
+      });
+    }
+    if (!regexLetrasAcentosEspacos.test(pais)) {
+      return res.status(400).json({
+        error: "O campo país só aceita letras, acentos e espaços",
+      });
+    }
+    if (!regexLetrasAcentosEspacos.test(cidade)) {
+      return res.status(400).json({
+        error: "O campo cidade só aceita letras, acentos e espaços",
+      });
+    }
+    if (!regexLetrasAcentosEspacos.test(atracao)) {
+      return res.status(400).json({
+        error: "O campo atraçao só aceita letras, acentos e espaços",
       });
     }
 
     // Executa a query para inserir o local no banco de dados
-    const queryInsert = `INSERT INTO local (continente, pais_OU_regiao) VALUES (?, ?)`;
-    connect.query(queryInsert, [continente, pais_OU_regiao], (err, result) => {
+    const queryInsert = `INSERT INTO local (continente, regiao, pais, cidade, atracao, fotoLocal) VALUES (?, ?, ?, ?, ?, ?)`;
+    connect.query(queryInsert, [continente, regiao, pais, cidade, atracao, fotoLocal], (err, result) => {
       if (err) {
         console.log("Erro: " + err);
         return res.status(500).json({ error: "Erro ao criar local" });
@@ -82,10 +118,10 @@ module.exports = class LocalController {
 
   static async updateLocal(req, res) {
     const { idLocal } = req.params;
-    const { continente, pais_OU_regiao } = req.body;
+    const { continente,  regiao, pais, cidade, atracao, fotoLocal  } = req.body;
 
     // Verifica se algum campo está em branco
-    if (!continente || !pais_OU_regiao) {
+    if (!continente || !regiao || !pais || !cidade || !atracao || !fotoLocal ) {
       return res
         .status(400)
         .json({ error: "Todos os campos são obrigatórios" });
@@ -98,10 +134,31 @@ module.exports = class LocalController {
         .json({ error: "O continente deve ter no máximo 9 caracteres" });
     }
 
-    // Verifica se o país ou região não excede 255 caracteres
-    if (pais_OU_regiao.length > 255) {
+    // Verifica se a região não excede o máximo de caracteres
+    if (regiao.length > 100) {
       return res.status(400).json({
-        error: "O campo país ou região deve ter no máximo 255 caracteres",
+        error: "O campo região deve ter no máximo 100 caracteres",
+      });
+    }
+
+    // Verifica se a país não excede o máximo de caracteres
+    if (pais.length > 100) {
+      return res.status(400).json({
+        error: "O campo região deve ter no máximo 100 caracteres",
+      });
+    }
+
+    // Verifica se cidade não excede o máximo de caracteres
+    if (cidade.length > 100) {
+      return res.status(400).json({
+        error: "O campo região deve ter no máximo 100 caracteres",
+      });
+    }
+
+    // Verifica se atração não excede o máximo de caracteres
+    if (atracao.length > 255) {
+      return res.status(400).json({
+        error: "O campo região deve ter no máximo 100 caracteres",
       });
     }
 
@@ -112,13 +169,29 @@ module.exports = class LocalController {
         error: "O campo continente só aceita letras, acentos e espaços",
       });
     }
-    if (!regexLetrasAcentosEspacos.test(pais_OU_regiao)) {
+    if (!regexLetrasAcentosEspacos.test(regiao)) {
       return res.status(400).json({
-        error: "O campo país ou região só aceita letras, acentos e espaços",
+        error: "O campo região só aceita letras, acentos e espaços",
+      });
+    }
+    if (!regexLetrasAcentosEspacos.test(pais)) {
+      return res.status(400).json({
+        error: "O campo país só aceita letras, acentos e espaços",
+      });
+    }
+    if (!regexLetrasAcentosEspacos.test(cidade)) {
+      return res.status(400).json({
+        error: "O campo cidade só aceita letras, acentos e espaços",
+      });
+    }
+    if (!regexLetrasAcentosEspacos.test(atracao)) {
+      return res.status(400).json({
+        error: "O campo atraçao só aceita letras, acentos e espaços",
       });
     }
 
-    const query = `UPDATE local SET continente = '${continente}', pais_OU_regiao = '${pais_OU_regiao}' WHERE idLocal = '${idLocal}'`;
+
+    const query = `UPDATE local SET continente = '${continente}', regiao = '${regiao}', pais = '${pais}', cidade = '${cidade}', atracao = '${atracao}', fotoLocal = '${fotoLocal}' WHERE idLocal = '${idLocal}'`;
 
     connect.query(query, (err, result) => {
       if (err) {
