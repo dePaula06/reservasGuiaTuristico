@@ -15,6 +15,9 @@ function Login() {
   const [cpf, setCpf] = useState("");
   const [senha, setSenha] = useState("");
 
+  function handleRegister(){
+    navigation.navigate('Register')
+  }
 
   async function handleLogin(){
 
@@ -34,7 +37,7 @@ function Login() {
       if (response.status === 200) {
         // Verificação geral para outros usuários
         Alert.alert("Sucesso", response.data.message);
-        navigation.navigate('Home');
+        navigation.navigate('Tabs');
       }
     } catch (error) {
       if (error.response) {
@@ -79,7 +82,7 @@ function Login() {
           <Text style={styles.textButton}>Entrar</Text>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text style={styles.textCriarConta}>Criar nova conta</Text>
+          <Text style={styles.textCriarConta} onPress={handleRegister}>Criar nova conta</Text>
         </TouchableOpacity>
       </View>
     </View>

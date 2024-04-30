@@ -5,6 +5,8 @@ import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import Init from "./src/init";
 import Login from "./src/login";
+import Register from "./src/register";
+import Tabs from "./src/tabsUser/tabs";
 import Home from "./src/tabsUser/home";
 import HomeAdm from "./src/tabsAdmin/home";
 
@@ -56,7 +58,25 @@ export default function App() {
           name="Login"
           component={Login}
         />
+        <Stack.Screen
+          options={{
+            title: "",
+            headerTransparent: true,
+            headerShown: false,
+          }}
+          name="Register"
+          component={Register}
+        />
 
+        <Stack.Screen
+          options={{
+            title: "",
+            headerTransparent: true,
+            headerShown: false,
+          }}
+          name="Tabs"
+          component={Tabs}
+        />
         <Stack.Screen
           options={{
             title: "",
@@ -66,14 +86,14 @@ export default function App() {
           name="Home"
           component={Home}
         />
-        <Stack.Screen 
-        options={{
-          title: "",
-          headerTransparent: true,
-          headerShown: false,
-        }}
-        name="HomeAdm"
-        component={HomeAdm}
+        <Stack.Screen
+          options={{
+            title: "",
+            headerTransparent: true,
+            headerShown: false,
+          }}
+          name="HomeAdm"
+          component={HomeAdm}
         />
       </Stack.Navigator>
     </NavigationContainer>
