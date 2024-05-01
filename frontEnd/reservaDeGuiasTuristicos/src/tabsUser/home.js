@@ -1,24 +1,39 @@
 import React, {useState, useEffect} from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Image, FlatList } from "react-native";
+import { View, TouchableOpacity, Text, StyleSheet, Image, FlatList, ScrollView } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import sheets from '../axios/axios';
 
 function Home(){
     const [locais, setLocais] = useState([]);
+    const [atracoes, setAtracoes] = useState([]);
     const navigation = useNavigation();
 
     useEffect(() => {
         fetchLocais();
+        fetchAtracoes();
     }, []);
 
     const fetchLocais = async () => {
         try {
             const response = await sheets.getLocais();
-            setLocais(response.data.local); // Certifique-se que a resposta está estruturada desta forma
+            setLocais(response.data.local); 
         } catch (error) {
             console.error("Erro ao buscar locais", error);
         }
     };
+
+    const fetchAtracoes = async () => {
+        try {
+            const response = await sheets.getAtracoes();
+            setAtracoes(response.data.atracao); 
+        } catch (error) {
+            console.error("Erro ao buscar locais", error);
+        }
+    };
+
+    function verGuias(){
+        navigation.navigate('Guias')
+    }
 
     return(
         <View style={styles.container}>
@@ -42,6 +57,26 @@ function Home(){
                     </TouchableOpacity>
                 )}
             />
+            <Text style={styles.textAtracoes}>Atrações</Text>
+            <FlatList
+                data={atracoes}
+                keyExtractor={(item) => item.idAtracao.toString()}
+                showsHorizontalScrollIndicator={false}
+                horizontal
+                snapToAlignment="start"
+                scrollEventThrottle={16}
+                decelerationRate="fast"        
+                renderItem={({ item }) => (
+                    <TouchableOpacity style={styles.buttonAtracao} >
+                        <Image source={{ uri: item.fotoAtracao }} style={styles.imageAtracao} />
+                    </TouchableOpacity>
+                )}
+            />
+            <View style={{flex: 1, alignItems: 'center', marginBottom: 20}}>
+            <TouchableOpacity style={styles.buttonVerGuias} onPress={verGuias}>
+                <Text style={styles.textVerGuias}>Ver guias</Text>
+            </TouchableOpacity>
+            </View>
         </View>
     )
 };
@@ -68,7 +103,7 @@ textLocais: {
     marginLeft: 20,
     fontSize: 20,
     fontFamily: 'Poppins-Bold',
-    color: '#036B92',
+    color: '#0499D2',
     marginTop: 20
 },
 buttonLocal: {
@@ -78,14 +113,14 @@ buttonLocal: {
     borderWidth: 1,
     borderColor: '#A6A39F',
     marginLeft: 20,
-    marginTop: 10
+    marginTop: 20
 },
 imageLocal:{
     flex: 1,
-    marginHorizontal: 15,
+    marginHorizontal: 10,
     marginTop: 10,
-    width: 170,
-    height: 100,
+    width: 180,
+    height: 120,
     borderRadius: 10
 },
 nameLocal: {
@@ -93,8 +128,42 @@ nameLocal: {
     fontFamily: 'Poppins-Bold',
     fontSize: 18,
     color: '#2A3236',
+},
+textAtracoes: {
+    marginLeft: 20, 
+    marginTop: -25,
+    fontFamily: 'Poppins-Bold',
+    fontSize: 18,
+    color: '#0499D2',
+},
+buttonAtracao: {
+    width: 75,
+    height: 75,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#A6A39F',
+    marginTop: 5,
+    marginLeft: 20
+},
+imageAtracao: {
+    width: 65,
+    height: 65,
+    margin: 4,
+    borderRadius: 10
+},
+buttonVerGuias: {
+    width: 275,
+    height: 50, borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#0499D2',
+    paddingVertical: 7,
+},
+textVerGuias: {
+    textAlign: 'center',
+    fontFamily: 'Poppins-Bold',
+    fontSize: 20,
+    color: '#0499D2'
 }
-
 });
 
 export default Home;

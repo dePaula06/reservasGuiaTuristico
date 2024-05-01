@@ -11,7 +11,8 @@ const api = axios.create({
 const sheets = {
     signInUser: (cpf, senha) => api.post("/sigin", { cpf, senha }),
     createUser: (cpf, nome, email, telefone, senha) => api.post("/user", { cpf, nome, email, telefone, senha }),
-    getLocais: () => api.get("/local/") // Adicione esta linha para buscar locais
+    getLocais: () => api.get("/local/"),
+    getAtracoes: () => api.get("/atracao/"),
 }
 
 export default sheets;
