@@ -1,12 +1,14 @@
 const express = require('express')
 const app = express();
 const cors = require('cors');
+const tesConnect = require('./db/testConnect');
 
 class AppController {
     constructor() {
       this.express = express();
       this.middlewares();
       this.routes();
+      tesConnect();
     }
 
     middlewares() {
