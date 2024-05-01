@@ -1,14 +1,47 @@
-import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Image } from "react-native";
-import { useNavigation } from '@react-navigation/native'
+import React, {useState, useEffect} from 'react';
+import { View, TouchableOpacity, Text, StyleSheet, Image, FlatList } from "react-native";
+import { useNavigation } from '@react-navigation/native';
+import sheets from '../axios/axios';
 
 function Home(){
+    const [locais, setLocais] = useState([]);
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        fetchLocais();
+    }, []);
+
+    const fetchLocais = async () => {
+        try {
+            const response = await sheets.getLocais();
+            setLocais(response.data.local); // Certifique-se que a resposta está estruturada desta forma
+        } catch (error) {
+            console.error("Erro ao buscar locais", error);
+        }
+    };
+
     return(
         <View style={styles.container}>
             <Text style={styles.textWelcome}>Bem vindo ao RGT!</Text>
             <Text style={styles.textWelcome2}>
                 O RGT (Reserva de Guia Turístico para Viagem) é uma plataforma projetada para facilitar a contratação de serviços de guias turísticos em diferentes destinos, oferecendo uma experiência enriquecedora e personalizada para os viajantes.
             </Text>
+            <Text style={styles.textLocais}>Locais populares</Text>
+            <FlatList
+                data={locais}
+                keyExtractor={(item) => item.idLocal.toString()}
+                showsHorizontalScrollIndicator={false}
+                horizontal
+                snapToAlignment="start"
+                scrollEventThrottle={16}
+                decelerationRate="fast"        
+                renderItem={({ item }) => (
+                    <TouchableOpacity style={styles.buttonLocal} >
+                        <Image source={{ uri: item.fotoLocal }} style={styles.imageLocal} />
+                            <Text style={styles.nameLocal}>{item.cidade}</Text>
+                    </TouchableOpacity>
+                )}
+            />
         </View>
     )
 };
@@ -28,6 +61,38 @@ textWelcome2: {
     fontSize: 12,
     fontFamily: 'Poppins-Regular',
     textAlign: 'center',
+    marginHorizontal: 20,
+    marginTop: 10
+},
+textLocais: {
+    marginLeft: 20,
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
+    color: '#036B92',
+    marginTop: 20
+},
+buttonLocal: {
+    width: 200, 
+    height: 150, 
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#A6A39F',
+    marginLeft: 20,
+    marginTop: 10
+},
+imageLocal:{
+    flex: 1,
+    marginHorizontal: 15,
+    marginTop: 10,
+    width: 170,
+    height: 100,
+    borderRadius: 10
+},
+nameLocal: {
+    textAlign: 'center',
+    fontFamily: 'Poppins-Bold',
+    fontSize: 18,
+    color: '#2A3236',
 }
 
 });
